@@ -110,7 +110,6 @@ def init_db():
     
     conn.commit()
     
-    # Add default admin
     for admin_id in ADMINS:
         c.execute('''
             INSERT OR IGNORE INTO admins (user_id, username, first_name, added_by, added_at)
@@ -163,7 +162,7 @@ def is_admin(user_id):
 def get_all_admins():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    c.execute("SELECT user_id, username, first_name, added_by, added_at FROM admins WHERE is_active = 1")
+    c.execute("SELECT user_id, username, first_name FROM admins WHERE is_active = 1")
     admins = c.fetchall()
     conn.close()
     return admins
@@ -238,7 +237,7 @@ def get_user_stats(user_id):
 # BOT INSTANCE
 # ============================================================
 
-bot = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+bot = TelegramClient('bot_session', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 
 # ============================================================
 # COMMANDS
@@ -331,7 +330,7 @@ async def admins_command(event):
     message = "👑 **Admin List:**\n\n"
     
     for admin in admins:
-        user_id, username, first_name, added_by, added_at = admin
+        user_id, username, first_name = admin
         message += f"• {first_name} (@{username})\n"
         message += f"  ID: `{user_id}`\n\n"
     
@@ -484,11 +483,11 @@ async def broadcast_command(event):
         await event.reply("❌ Unauthorized!")
         return
     
-    await event.reply("📢 Send your broadcast message:")
+    await event.reply("📢 Send your broadcast message (reply to this message):")
     
     @bot.on(events.NewMessage())
     async def broadcast_reply(msg):
-        if msg.sender_id == event.sender_id:
+        if msg.sender_id == event.sender_id and msg.is_reply:
             conn = sqlite3.connect(DB_FILE)
             c = conn.cursor()
             c.execute("SELECT user_id FROM users")
@@ -577,8 +576,8 @@ async def echo(event):
 
 print("✅ Bot Started Successfully!")
 
-async def main():
-    await bot.run_until_disconnected()
+def main():
+    bot.run_until_disconnected()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
