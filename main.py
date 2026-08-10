@@ -481,7 +481,7 @@ async def stats_command(event):
 📱 Sessions: {total_sessions}
 👤 Members Added: {total_members}
 ⚡ Status: Running
-🤖 Bot: @{bot.me.username}
+🤖 Bot is online!
 """)
 
 @bot.on(events.NewMessage(pattern='/broadcast'))
@@ -582,8 +582,6 @@ async def echo(event):
 # ============================================================
 
 print("✅ Bot Started Successfully!")
-print(f"🤖 Bot: @{bot.me.username}")
-print(f"👑 Admins: {len(get_all_admins())}")
 
 async def main():
     await bot.run_until_disconnected()
