@@ -4,6 +4,9 @@ import requests
 import asyncio
 from datetime import datetime
 from telethon import TelegramClient, events
+from telethon.tl.functions.channels import InviteToChannelRequest, GetParticipantsRequest
+from telethon.tl.types import ChannelParticipantsSearch
+from telethon.errors import FloodWaitError
 
 # ============================================================
 # CONFIGURATION
@@ -18,12 +21,12 @@ ADMINS = [8762845215]
 DB_FILE = "bot_saas.db"
 
 # ============================================================
-# PLAN LIMITS - ✅ UNLIMITED ACCOUNTS
+# PLAN LIMITS - ✅ Free = 35 Adds | Unlimited Accounts
 # ============================================================
 
 def get_plan_limits(plan):
     limits = {
-        'free': {'adds': 10, 'dms': 5, 'accounts': 999999},
+        'free': {'adds': 35, 'dms': 10, 'accounts': 999999},
         'basic': {'adds': 200, 'dms': 100, 'accounts': 999999},
         'pro': {'adds': 1000, 'dms': 500, 'accounts': 999999},
         'enterprise': {'adds': 99999, 'dms': 99999, 'accounts': 999999}
@@ -365,6 +368,7 @@ Hi {first_name}!
 ✅ Add members to groups
 ✅ Send mass DMs
 ✅ **Unlimited Accounts** in all plans!
+✅ **Free Plan: 35 adds/day!**
 
 📌 **Commands:**
 /start - Show menu
@@ -727,15 +731,16 @@ async def plan_command(event):
     await event.reply("""
 📊 **Pricing Plans:**
 
-🆓 **Free** → 10 adds/day | **∞ Accounts**
+🆓 **Free** → **35 adds/day** | 10 DMs | ∞ Accounts
 
-💎 **Basic** → 200 adds/day | **∞ Accounts**
+💎 **Basic** → 200 adds/day | 100 DMs | ∞ Accounts
 
-⚡ **Pro** → 1000 adds/day | **∞ Accounts**
+⚡ **Pro** → 1000 adds/day | 500 DMs | ∞ Accounts
 
-👑 **Enterprise** → Unlimited adds | **∞ Accounts**
+👑 **Enterprise** → Unlimited adds | ∞ DMs | ∞ Accounts
 
 ✅ **Every plan includes UNLIMITED accounts!**
+✅ **Free plan: 35 adds/day!**
 
 🔑 **Upgrade:** @Real_Member_Adding_1
 """)
@@ -931,7 +936,8 @@ async def echo(event):
 # ============================================================
 
 print("✅ Bot Started Successfully!")
-print("✅ Unlimited Accounts Feature Enabled!")
+print("✅ Free Plan: 35 adds/day!")
+print("✅ Unlimited Accounts in all plans!")
 
 def main():
     bot.run_until_disconnected()
