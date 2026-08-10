@@ -110,6 +110,7 @@ def init_db():
     
     conn.commit()
     
+    # Add default admin
     for admin_id in ADMINS:
         c.execute('''
             INSERT OR IGNORE INTO admins (user_id, username, first_name, added_by, added_at)
@@ -122,6 +123,7 @@ def init_db():
     
     conn.commit()
     conn.close()
+    print("✅ Database initialized!")
 
 # ============================================================
 # DATABASE FUNCTIONS
@@ -232,6 +234,12 @@ def get_user_stats(user_id):
     stats = c.fetchone()
     conn.close()
     return stats
+
+# ============================================================
+# DATABASE INITIALIZE
+# ============================================================
+
+init_db()  # ✅ YE LINE IMPORTANT HAI!
 
 # ============================================================
 # BOT INSTANCE
