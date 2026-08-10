@@ -1,0 +1,9 @@
+[project]
+name = "telegram-bot"
+version = "1.0.0"
+dependencies = [
+    "telethon",
+    "requests",
+    "asyncio",
+    "python-telegram-bot"
+]

@@ -1,0 +1,4 @@
+telethon
+requests
+asyncio
+python-telegram-bot
