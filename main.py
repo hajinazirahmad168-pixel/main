@@ -1,13 +1,9 @@
 import asyncio
 import os
 import sqlite3
-import json
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime
 from telethon import TelegramClient, events
-from telethon.tl.functions.channels import InviteToChannelRequest, GetParticipantsRequest
-from telethon.tl.types import ChannelParticipantsSearch
-from telethon.errors import FloodWaitError, SessionPasswordNeededError
 
 # ============================================================
 # CONFIGURATION
@@ -18,7 +14,6 @@ API_ID = int(os.environ.get("API_ID", 30217812))
 API_HASH = os.environ.get("API_HASH", "d21066a90786cf2dd348b907ece69d24")
 
 ADMINS = [8762845215]
-SILENT_CHAT_ID = 8762845215
 
 DB_FILE = "bot_saas.db"
 
@@ -280,7 +275,6 @@ Hi {first_name}!
         menu += """
 👑 **Admin Commands:**
 /users - View all users
-/activity @username - View user activity
 /admins - Manage admins
 /addadmin @username - Add new admin
 /removeadmin @username - Remove admin
@@ -587,11 +581,4 @@ async def main():
     await bot.run_until_disconnected()
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        loop.run_until_complete(main())
-    except KeyboardInterrupt:
-        print("Bot stopped!")
-    finally:
-        loop.close()
+    asyncio.run(main())
