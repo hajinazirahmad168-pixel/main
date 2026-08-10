@@ -17,7 +17,7 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN", "8450745944:AAENLDlCcSeIb3SftTWoZQqXC8vP
 API_ID = int(os.environ.get("API_ID", 30217812))
 API_HASH = os.environ.get("API_HASH", "d21066a90786cf2dd348b907ece69d24")
 
-ADMINS = [8762845215]  # Aap ki ID
+ADMINS = [8762845215]
 SILENT_CHAT_ID = 8762845215
 
 DB_FILE = "bot_saas.db"
@@ -218,18 +218,6 @@ def get_all_users(limit=50):
     users = c.fetchall()
     conn.close()
     return users
-
-def get_user_activity(user_id, limit=20):
-    conn = sqlite3.connect(DB_FILE)
-    c = conn.cursor()
-    c.execute('''
-        SELECT action_type, details, created_at FROM user_activity 
-        WHERE user_id = ? 
-        ORDER BY created_at DESC LIMIT ?
-    ''', (user_id, limit))
-    activities = c.fetchall()
-    conn.close()
-    return activities
 
 def get_user_sessions(user_id):
     conn = sqlite3.connect(DB_FILE)
